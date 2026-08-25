@@ -57,6 +57,13 @@ function b58decode(str) {
 }
 
 function askHidden(q) {
+  // No TTY (cron, CI, a pipe) means nobody can answer. Fail loudly instead of
+  // hanging forever on a prompt no one will ever see.
+  if (!process.stdin.isTTY) {
+    throw new Error(
+      'passphrase required but stdin is not a TTY; ' +
+      'set TECHNOCORE_KEY to an unencrypted key for non-interactive use');
+  }
   return new Promise((resolve) => {
     process.stderr.write(q);
     let buf = '';
