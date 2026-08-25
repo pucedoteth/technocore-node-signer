@@ -1,0 +1,5 @@
+node_modules/
+*.pem
+*.jwk.json
+identity*
+.DS_Store
